@@ -41,6 +41,18 @@ def sql_to_str(con, sql, col_end=' ', row_end='\n'):
     curs.close()
     return return_str
 
+def sql_to_list(con, sql, col_end=' '):
+	return_list = []
+	with con.cursor() as curs:
+		curs.execute(sql)
+		if (curs.description is not None):
+			for row in curs:
+				return_str = ''
+				for cell in row:
+					return_str += str(cell) + col_end
+				return_list.append(return_str.strip())
+	return return_list
+
 def sql_to_csv(con, sql, csv_file, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL, lineterminator='\n'):
 	# run a sql statement and write the results into a csv file
 	# return the number of rows read
